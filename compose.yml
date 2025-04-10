@@ -1,0 +1,20 @@
+services:
+  server:
+    build:
+      context: . # Assuming Dockerfile is in the root of your project
+      dockerfile: Dockerfile
+      target: final # Build only the final stage
+      args:
+        - CGO_ENABLED=0 # Disable CGO for smaller binaries
+    ports:
+      - "5000:8100" # Match Dockerfile EXPOSE
+    volumes:
+      - .:/app
+
+    networks:
+      - app-network
+    restart: unless-stopped # Restart the container if it stops
+
+networks:
+  app-network:
+    driver: bridge
